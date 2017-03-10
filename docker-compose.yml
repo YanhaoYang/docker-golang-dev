@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  golang-dev:
+    container_name: golang-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yanhao/golang-dev
+    hostname: golang.dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/go/src
