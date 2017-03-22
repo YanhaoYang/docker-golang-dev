@@ -6,7 +6,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/golang-dev
+    image: yanhao/docker-golang-dev
     hostname: golang.dev
     ports:
       - "8000:8000"
