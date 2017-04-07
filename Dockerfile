@@ -5,11 +5,17 @@ MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
-  zsh vim-nox silversearcher-ag curl nginx locales sudo && \
+  # for build vim
+  python-dev libncurses5-dev libncursesw5-dev \
+  zsh silversearcher-ag curl nginx locales sudo \
+  && \
   apt-get autoremove -y && \
   apt-get autoclean && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY files/nginx.conf /etc/nginx/nginx.conf
+COPY files/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 
 RUN \
   chsh --shell /bin/zsh && \
@@ -22,10 +28,20 @@ RUN \
   chown -R docker:docker /var/lib/nginx && \
   chown -R docker:docker /var/log/nginx && \
   chown -R docker:docker /go && \
-  wget -O /usr/local/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 && \
-  chmod +x /usr/local/bin/dumb-init
-
-COPY files/nginx.conf /etc/nginx/nginx.conf
+  chmod +x /usr/local/bin/dumb-init && \
+  # build vim
+  cd /tmp && \
+  git clone https://github.com/vim/vim.git && \
+  cd /tmp/vim && \
+  ./configure \
+  --enable-multibyte \
+  --enable-pythoninterp=yes \
+  --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
+  && \
+  make && \
+  make install && \
+  cd ~ && \
+  rm -rf /tmp/*
 
 ENV TERM=xterm-256color
 
