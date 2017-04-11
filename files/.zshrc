@@ -6,6 +6,8 @@ plugins=(git zsh-syntax-highlighting zsh-autosuggestions alias-tips)
 
 source $ZSH/oh-my-zsh.sh
 
+bindkey -v
+
 export LANG=en_US.UTF-8
 export EDITOR='vim'
 
