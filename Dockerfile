@@ -1,4 +1,4 @@
-FROM golang:1.8
+FROM golang:1.10.1
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
