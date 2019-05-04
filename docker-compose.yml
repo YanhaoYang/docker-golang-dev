@@ -8,11 +8,25 @@ services:
       dockerfile: Dockerfile
     image: yanhao/docker-golang-dev
     hostname: golang.dev
-    ports:
-      - "8000:8000"
     volumes:
       - ./src:/go/src
       - $SSH_AUTH_SOCK:/ssh-agent
       - "${HOME}/.vbuf:/home/docker/.vbuf"
     environment:
       - SSH_AUTH_SOCK=/ssh-agent
+
+  ssh-agent:
+    image: yanhao/ssh-agent
+
+  ingress:
+    image: traefik
+    command: --api --docker --docker.domain=localhost
+    ports:
+      - "80:80"
+      - "8088:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/etc/traefik/traefik.toml
+    labels:
+      - "traefik.frontend.rule=Host:dashboard.localhost"
+      - "traefik.port=8080"

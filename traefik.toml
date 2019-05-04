@@ -1,0 +1,39 @@
+[api]
+
+[docker]
+domain = "localhost"
+watch = true
+
+[file]
+  [backends]
+    [backends.ve]
+      [backends.ve.servers.server1]
+      url = "http://www:3000"
+      weight = 1
+    [backends.go_api]
+      [backends.go_api.servers.server1]
+      url = "http://godev:8080"
+      weight = 1
+    [backends.go_bk]
+      [backends.go_bk.servers.server1]
+      url = "http://godev:9000"
+      weight = 1
+
+  [frontends]
+    [frontends.production]
+    backend = "ve"
+    passHostHeader = true
+      [frontends.production.routes.test_1]
+      rule = "Host:www.ve.com,admin.ve.com"
+
+    [frontends.go_api]
+    backend = "go_api"
+    passHostHeader = true
+      [frontends.go_api.routes.test_1]
+      rule = "Host:api.godev.localhost,ws.ve.localhost"
+
+    [frontends.go_bk]
+    backend = "go_bk"
+    passHostHeader = true
+      [frontends.go_bk.routes.test_1]
+      rule = "Host:bk.godev.localhost"

@@ -1,4 +1,4 @@
-FROM golang:1.8
+FROM golang:1.12.4
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
@@ -8,15 +8,14 @@ RUN \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag curl nginx locales sudo \
+  zsh silversearcher-ag curl locales sudo \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY files/nginx.conf /etc/nginx/nginx.conf
-COPY files/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+COPY files/spark /usr/local/bin/spark
 
 RUN \
   chsh --shell /bin/zsh && \
@@ -26,10 +25,7 @@ RUN \
   useradd --gid 1000 --uid 1000 --create-home docker && \
   echo "docker ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/user && \
   chmod 0440 /etc/sudoers.d/user && \
-  chown -R docker:docker /var/lib/nginx && \
-  chown -R docker:docker /var/log/nginx && \
   chown -R docker:docker /go && \
-  chmod +x /usr/local/bin/dumb-init && \
   # build vim
   cd /tmp && \
   git clone https://github.com/vim/vim.git && \
@@ -66,25 +62,12 @@ RUN \
   git clone https://github.com/YanhaoYang/vim-go-ide.git ~/.vim_go_runtime && \
   sh ~/.vim_go_runtime/bin/install && \
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
-  ~/.fzf/install --all && \
-  go get -v github.com/nsf/gocode && \
-  go get -v github.com/alecthomas/gometalinter && \
-  go get -v golang.org/x/tools/cmd/goimports && \
-  go get -v golang.org/x/tools/cmd/guru && \
-  go get -v golang.org/x/tools/cmd/gorename && \
-  go get -v github.com/golang/lint/golint && \
-  go get -v github.com/rogpeppe/godef && \
-  go get -v github.com/kisielk/errcheck && \
-  go get -v github.com/jstemmer/gotags && \
-  go get -v github.com/klauspost/asmfmt/cmd/asmfmt && \
-  go get -v github.com/fatih/motion && \
-  go get -v github.com/zmb3/gogetdoc && \
-  go get -v github.com/josharian/impl && \
-  go get -u github.com/golang/dep/... && \
-  go get github.com/onsi/ginkgo/ginkgo
+  ~/.fzf/install --all
+
+RUN vim --not-a-term -u ~/.vimrc.go -c "execute 'silent GoUpdateBinaries' | execute 'quit'"
 
 COPY files/.zshrc /home/docker/.zshrc
 
+EXPOSE 3000
 WORKDIR /go/src
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
+CMD ["spark", "-port", "65533", "<h1>Hello world!</h1>"]
