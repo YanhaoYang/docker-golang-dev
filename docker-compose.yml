@@ -16,3 +16,19 @@ services:
       - "${HOME}/.vbuf:/home/docker/.vbuf"
     environment:
       - SSH_AUTH_SOCK=/ssh-agent
+
+  ssh-agent:
+    image: yanhao/ssh-agent
+
+  ingress:
+    image: traefik
+    command: --api --docker --docker.domain=localhost
+    ports:
+      - "80:80"
+      - "8088:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/etc/traefik/traefik.toml
+    labels:
+      - "traefik.frontend.rule=Host:dashboard.localhost"
+      - "traefik.port=8080"
