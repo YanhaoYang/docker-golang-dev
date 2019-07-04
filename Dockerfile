@@ -8,14 +8,12 @@ RUN \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag curl locales sudo \
+  zsh silversearcher-ag curl locales sudo less \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-COPY files/spark /usr/local/bin/spark
 
 RUN \
   chsh --shell /bin/zsh && \
@@ -51,6 +49,9 @@ ENV TERM=xterm-256color
 # To make oh-my-zsh installer happy
 ENV SHELL=/usr/bin/zsh
 
+COPY files/spark /usr/local/bin/spark
+COPY files/gs /usr/local/bin/gs
+
 USER docker
 
 RUN \
@@ -67,6 +68,7 @@ RUN \
 RUN vim --not-a-term -u ~/.vimrc.go -c "execute 'silent GoUpdateBinaries' | execute 'quit'"
 
 COPY files/.zshrc /home/docker/.zshrc
+COPY files/custom_config.vim /home/docker/.vim_go_runtime/custom_config.vim
 
 EXPOSE 3000
 WORKDIR /go/src
