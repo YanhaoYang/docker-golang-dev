@@ -10,7 +10,8 @@ if has('statusline')
   set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
 endif
 
-nmap <leader>f :Buffers<CR>
+nmap <leader>bu :Buffers<CR>
+nmap <leader>f :Files<CR>
 nmap <leader>m :Marks<CR>
 nmap <leader>q :q<CR>
 nmap <leader>v :set invpaste paste?<CR>
@@ -60,10 +61,10 @@ augroup AutoWrite
   autocmd! BufLeave * :update
 augroup END
 
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+let g:syntastic_go_checkers = ['golint', 'govet']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_deadline = "30s"
 
 autocmd FileType go nmap <leader>i  <Plug>(go-install)
@@ -75,3 +76,6 @@ au FileType go nmap <Leader>dt <Plug>(go-def-tab)
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
 let g:SuperTabContextDefaultCompletionType = "<c-n>"
+
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr', '\.DS_Store']
+let NERDTreeShowHidden=1

@@ -60,7 +60,7 @@ RUN \
    git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
   mkdir -p ~/.vim/autoload ~/.vim/bundle && \
   curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
-  git clone https://github.com/YanhaoYang/vim-go-ide.git ~/.vim_go_runtime && \
+  git clone https://github.com/yanhao-a2b/vim-go-ide.git ~/.vim_go_runtime && \
   sh ~/.vim_go_runtime/bin/install && \
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
