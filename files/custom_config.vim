@@ -20,6 +20,7 @@ nnoremap <silent> <C-f> :NERDTreeFind<CR>
 map <C-q> :q<CR>
 map <C-x> :qa<CR>
 
+nnoremap yc :call system('nc -N localhost 8377', @0)<CR>
 nnoremap gc :GoDoc<CR>
 nnoremap gp :PreviewMarkdown<CR>
 
