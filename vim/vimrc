@@ -168,9 +168,6 @@ nmap <Leader>pt :PreviewTextile<CR>
 nmap <Leader>pr :PreviewRdoc<CR>
 nmap <Leader>ph :PreviewHtml<CR>
 
-map <F9> :cn<CR>
-map <F10> @a<CR>
-
 " The Silver Searcher
 if executable('ag')
   " Use ag over grep
@@ -363,3 +360,13 @@ map <leader>tk :tabprevious
 " visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+map <leader>q :q<cr>
+
+nnoremap fa :GoAlternate<CR>
+nnoremap ff :GoFillStruct<CR>
+nnoremap fe :GoIfErr<CR>
+nnoremap fi :GoImpl<CR>
+nnoremap fk :GoKeyify<CR>
+nnoremap frf :GoReferrers<CR>
+nnoremap frn :GoRename<CR>
