@@ -1,0 +1,42 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Yggdroot/indentLine'
+
+Plugin 'tpope/vim-surround'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'ervandew/supertab'
+
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
+Plugin 'gregsexton/gitv'
+Plugin 'airblade/vim-gitgutter'
+
+Plugin 'taxilian/vim-web-indent'
+Plugin 'greyblake/vim-preview'
+Plugin 'godlygeek/tabular'
+
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
+
+Plugin 'elzr/vim-json'
+
+Plugin 'YanhaoYang/neodark.vim'
+
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
+
+Plugin 'fatih/vim-go'
+Plugin 'jiangmiao/auto-pairs'
+
+Plugin 'majutsushi/tagbar'
+
+call vundle#end()

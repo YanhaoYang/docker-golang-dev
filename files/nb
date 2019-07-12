@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+options = {}
+
+optparse = OptionParser.new do|opts|
+  opts.banner = "Usage: nb [options] title ..."
+
+  options[:branch] = "master"
+  opts.on( '-b', '--branch BRANCH', 'based on BRANCH (default: master)' ) do |branch|
+    options[:branch] = branch
+  end
+
+  options[:type] = "fix"
+  opts.on( '-t', '--type TYPE', 'type of branch (default: fix)' ) do |type|
+    options[:type] = type
+  end
+
+  opts.on( '-f', '--feature', 'type of branch is feature' ) do
+    options[:type] = 'feature'
+  end
+end
+
+optparse.parse!
+
+branch = ARGV.join(' ').downcase
+branch.gsub!(/[^a-z0-9_]/, ' ')
+branch.strip!
+branch.squeeze!(' ')
+branch.gsub!(' ', '-')
+
+if branch == ""
+  puts optparse
+  exit(0)
+end
+
+cmds = []
+cmds << "git checkout #{options[:branch]}"
+cmds << "git pull -v"
+cmds << "git checkout -b #{options[:type]}/#{branch} #{options[:branch]}"
+
+cmds.each do |cmd|
+  puts cmd
+  `#{cmd}`
+end

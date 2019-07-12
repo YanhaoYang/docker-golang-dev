@@ -50,7 +50,11 @@ ENV TERM=xterm-256color
 ENV SHELL=/usr/bin/zsh
 
 COPY files/spark /usr/local/bin/spark
+COPY files/nb /usr/local/bin/nb
 COPY files/gs /usr/local/bin/gs
+COPY vim /home/docker/.vim
+
+RUN chown -R docker:docker /home/docker/.vim
 
 USER docker
 
@@ -58,17 +62,13 @@ RUN \
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
    git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
-  mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-  curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim && \
-  git clone https://github.com/yanhao-a2b/vim-go-ide.git ~/.vim_go_runtime && \
-  sh ~/.vim_go_runtime/bin/install && \
+  cd ~/.vim && ./setup.sh && cd && \
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all
 
-RUN vim --not-a-term -u ~/.vimrc.go -c "execute 'silent GoUpdateBinaries' | execute 'quit'"
+RUN vim --not-a-term -c "execute 'silent GoUpdateBinaries' | execute 'quit'"
 
 COPY files/.zshrc /home/docker/.zshrc
-COPY files/custom_config.vim /home/docker/.vim_go_runtime/custom_config.vim
 
 EXPOSE 3000
 WORKDIR /go/src
